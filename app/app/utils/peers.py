@@ -1,11 +1,4 @@
-from time import sleep
-
-import requests
-
-from icon_node_sidecar.config import settings
-from icon_node_sidecar.log import logger
-from icon_node_sidecar.metrics import prom_metrics
-from icon_node_sidecar.utils.rpc import get_admin_chain, get_icx_getLastBlock
+from .rpc import get_admin_chain
 
 
 def p2p_to_rpc_address(p2p_address):
@@ -57,6 +50,6 @@ def get_peers(peer_set: set, added_peers: list = None):
                 peer_set.add(peer_item)
 
     if old_peer_count == len(added_peers):
-        return peer_set
+        return list(peer_set)
     else:
         return get_peers(peer_set, added_peers=added_peers)

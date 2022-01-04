@@ -2,8 +2,8 @@ import json
 
 import requests
 
-from icon_node_sidecar.config import settings
-from icon_node_sidecar.log import logger
+from ..log import logger
+from ..settings import settings
 
 
 def convert_hex_int(hex_string: str) -> int:
@@ -46,9 +46,12 @@ def get_admin_chain(ip_address: str):
 
 def get_icx_getLastBlock(target_ip):
     payload = {"jsonrpc": "2.0", "method": "icx_getLastBlock", "id": 1234}
-    r = requests.post(target_ip, data=json.dumps(payload))
+    try:
+        r = requests.post(target_ip, data=json.dumps(payload), timeout=1)
+    except Exception:
+        return None
 
-    if r.status_code != 200:
-        return r
+    if r.status_code == 200:
+        return json.loads(r.content)["result"]["height"]
 
     return None
