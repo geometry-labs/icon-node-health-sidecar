@@ -35,3 +35,16 @@ services:
     command: "--enable_load_reader=true"
     depends_on:
       - prep
+
+  health:
+    image: geometrylabs/icon-node-health-check:latest
+    ports:
+      - 8090:80
+    restart: always
+    environment:
+      BLOCK_HEIGHT_VARIANCE: 50
+      PEER_SEED_IP: "52.196.159.184"
+      PEER_SEED_ADDRESS: "hx9c63f73d3c564a54d0eed84f90718b1ebed16f09"
+      CRON_SLEEP_SEC: 5
+    depends_on:
+      - prep

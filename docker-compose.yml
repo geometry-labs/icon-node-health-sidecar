@@ -13,9 +13,12 @@ services:
       - ./data:/goloop/data
       - ./logs:/goloop/logs
       - ./config:/goloop/config
-
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://health:8090/readyz"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
     environment:
-
       SERVICE: "${SERVICE:-MainNet}" # MainNet, SeJong
       GOLOOP_LOG_LEVEL: "debug" # trace, debug, info, warn, error, fatal, panic
       KEY_STORE_FILENAME: "${KEY_STORE_FILENAME:-keystore}" # e.g. keystore.json with file at config/keystore.json
